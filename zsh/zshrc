@@ -1,0 +1,83 @@
+HISTFILE=~/.histfile
+HISTSIZE=1000
+SAVEHIST=1000
+
+alias ls='ls --color=auto'
+alias ll='ls -l'
+alias la='ls -a'
+alias lla='ls -la'
+alias l='ls -CF'
+
+setopt autocd extendedglob notify
+unsetopt beep nomatch
+bindkey -e
+zstyle :compinstall filename '/home/witch/.zshrc'
+
+autoload -Uz compinit
+compinit
+
+autoload -U promptinit
+promptinit
+
+source <(curl -sL init.zshell.dev); zzinit
+[[ $COLORTERM = *(24bit|truecolor)* ]] || zmodload zsh/nearcolor
+
+zi load zsh-users/zsh-syntax-highlighting
+zi load zsh-users/zsh-autosuggestions
+zi load zsh-users/zsh-completions
+
+zstyle ':completion:*' completer _complete _match _approximate
+zstyle ':completion:*:match:*' original only
+zstyle -e ':completion:*:approximate:*' max-errors 'reply=($((($#PREFIX+$#SUFFIX)/3>7?7:($#PREFIX+$#SUFFIX)/3))numeric)'
+zstyle ':completion:*:matches' group 'yes'
+zstyle ':completion:*:options' description 'yes'
+zstyle ':completion:*:options' auto-description '%d'
+zstyle ':completion:*:corrections' format ' %F{green}-- %d (errors: %e) --%f'
+zstyle ':completion:*:descriptions' format ' %F{yellow}-- %d --%f'
+zstyle ':completion:*:messages' format ' %F{purple} -- %d --%f'
+zstyle ':completion:*:warnings' format ' %F{red}-- no matches found --%f'
+zstyle ':completion:*:default' list-prompt '%S%M matches%s'
+zstyle ':completion:*' format ' %F{yellow}-- %d --%f'
+zstyle ':completion:*' group-name ''
+zstyle ':completion:*' verbose yes
+zstyle ':completion:*' matcher-list 'm:{a-zA-Z}={A-Za-z}' 'r:|[._-]=* r:|=*' 'l:|=* r:|=*'
+zstyle ':completion:*:functions' ignored-patterns '(_*|pre(cmd|exec))'
+zstyle ':completion:*' use-cache true
+zstyle ':completion:*' rehash true
+zstyle ':completion:*' menu select
+zstyle ':completion:*' list-colors ${(s.:.)LS_COLORS}
+
+if which carapace &>/dev/null; then source <(carapace _carapace zsh); fi
+
+zi load Moarram/headline
+
+HEADLINE_PROMPT="$ "
+HEADLINE_STYLE_JOINT=$light_black
+HEADLINE_STYLE_USER=$bold$red
+HEADLINE_STYLE_HOST=$green
+HEADLINE_STYLE_PATH=$light_magenta
+HEADLINE_STYLE_BRANCH=$bold$cyan
+HEADLINE_STYLE_STATUS=$bold$magenta
+HEADLINE_STYLE_DEFAULT=
+HEADLINE_STYLE_JOINT_LINE=$light_black
+HEADLINE_STYLE_USER_LINE=$bold$red
+HEADLINE_STYLE_HOST_LINE=$green
+HEADLINE_STYLE_PATH_LINE=$light_magenta
+HEADLINE_STYLE_BRANCH_LINE=$bold$cyan
+HEADLINE_STYLE_STATUS_LINE=$bold$magenta
+HEADLINE_USER_PREFIX=''
+HEADLINE_HOST_PREFIX=''
+HEADLINE_PATH_PREFIX=''
+HEADLINE_BRANCH_PREFIX=' '
+HEADLINE_USER_TO_HOST='@'
+HEADLINE_HOST_TO_PATH=':'
+HEADLINE_PATH_TO_BRANCH=' on '
+HEADLINE_PAD_TO_BRANCH=' on '
+HEADLINE_BRANCH_TO_STATUS=' ('
+HEADLINE_STATUS_TO_STATUS='|'
+HEADLINE_STATUS_END=')'
+HEADLINE_LINE_MODE=off
+HEADLINE_DO_GIT_STATUS_COUNTS=true
+HEADLINE_DO_ERR=true
+HEADLINE_DO_CLOCK=false
+HEADLINE_CLOCK_FORMAT='%c'
